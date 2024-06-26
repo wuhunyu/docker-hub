@@ -24,10 +24,10 @@ jobs:
         env:
           ALIYUN_NAMESPACE: ${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}
         run: |
-          for image in $(jq '.[]' images.json); do
-            echo "Processing image: $image"
-            docker pull $image
+          for image in $(jq -r '.[]' images.json); do
+            echo "Processing image: ${image}"
+            docker pull ${image}
             aliyun_image="registry.cn-guangzhou.aliyuncs.com/${{ env.ALIYUN_NAMESPACE }}/${image##*/}"
-            docker tag $image $aliyun_image
-            docker push $aliyun_image
+            docker tag ${image} $aliyun_image
+            docker push ${aliyun_image}
           done
