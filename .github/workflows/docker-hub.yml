@@ -1,25 +1,33 @@
 name: Pull and Push Docker Images
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
+      # 检出仓库代码
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      # 安装 jq 以处理 JSON 文件
+      - name: Install jq
+        run: apt-get install -y jq
+        
       # 登录到阿里云容器镜像服务
       - name: Log in to Alibaba Cloud Registry
         run: echo "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_REGISTRY_USERNAME }}" registry.cn-guangzhou.aliyuncs.com --password-stdin
-
+      
       # 拉取和推送 Docker 镜像
       - name: Pull and Push Docker images
         env:
           ALIYUN_NAMESPACE: ${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}
         run: |
-          docker pull nginx:latest
-          aliyun_image="registry.cn-guangzhou.aliyuncs.com/${{ env.ALIYUN_NAMESPACE }}/nginx:latest"
-          docker tag nginx:latest $aliyun_image
-          docker push $aliyun_image
+          for image in $(jq '.[]' images.json); do
+            echo "Processing image: $image"
+            docker pull $image
+            aliyun_image="registry.cn-guangzhou.aliyuncs.com/${{ env.ALIYUN_NAMESPACE }}/${image##*/}"
+            docker tag $image $aliyun_image
+            docker push $aliyun_image
+          done
