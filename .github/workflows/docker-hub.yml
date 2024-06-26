@@ -18,13 +18,6 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
-      # 读取 images.json 文件并设置环境变量
-      - name: Read images.json
-        id: read-images
-        run: |
-          IMAGES=$(jq -c '.[]' images.json)
-          echo "::set-output name=images::$IMAGES"
-
       # 登录到阿里云容器镜像服务
       - name: Log in to Alibaba Cloud Registry
         run: echo "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_REGISTRY_USERNAME }}" registry.cn-guangzhou.aliyuncs.com --password-stdin
@@ -34,8 +27,8 @@ jobs:
         env:
           ALIYUN_NAMESPACE: ${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}
         run: |
-          images=${{ steps.read-images.outputs.images }}
-          echo $images
+          images=$(jq -r '.[]' images.json)
+          echo "images $images"
           for image in $(echo $images | jq -r '.[]'); do
             echo "Processing image: $image"
             docker pull $image
