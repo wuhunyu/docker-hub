@@ -35,6 +35,7 @@ jobs:
           ALIYUN_NAMESPACE: ${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}
         run: |
           images=${{ steps.read-images.outputs.images }}
+          echo images
           for image in $(echo $images | jq -r '.[]'); do
             echo "Processing image: $image"
             docker pull $image
