@@ -13,7 +13,7 @@ jobs:
         
       # 安装 jq 以处理 JSON 文件
       - name: Install jq
-        run: apt-get install -y jq
+        run: sudo apt-get install -y jq
         
       # 登录到阿里云容器镜像服务
       - name: Log in to Alibaba Cloud Registry
