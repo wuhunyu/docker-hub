@@ -1,4 +1,3 @@
 [
-  "minio/minio",
-  "nginx"
+  "sanjusss/aliyun-ddns"
 ]
