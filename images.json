@@ -1,3 +1,4 @@
 [
-  "ubuntu:25.04"
+  "nginxproxy/nginx-proxy:1.6.4",
+  "blackcandy/blackcandy:3.0.0"
 ]
