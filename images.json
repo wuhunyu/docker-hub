@@ -1,5 +1,4 @@
 [
-    "langgenius/dify-api:1.0.1",
-    "langgenius/dify-web:1.0.1",
-    "langgenius/dify-plugin-daemon:0.0.4-local"
+    "ubuntu/squid:latest",
+    "semitechnologies/weaviate:1.19.0"
 ]
