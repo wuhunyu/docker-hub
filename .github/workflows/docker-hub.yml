@@ -7,6 +7,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # 清理不必要的磁盘空间
+      - name: Clean up disk space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
       # 检出仓库代码
       - name: Checkout Repository
         uses: actions/checkout@v4
