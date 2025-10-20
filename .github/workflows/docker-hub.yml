@@ -1,8 +1,10 @@
 name: Pull and Push Docker Images
+
 on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,6 +16,7 @@ jobs:
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /opt/ghc
           sudo rm -rf /usr/local/share/boost
+
       # 检出仓库代码
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -26,15 +29,40 @@ jobs:
       - name: Log in to Alibaba Cloud Registry
         run: echo "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_REGISTRY_USERNAME }}" registry.cn-guangzhou.aliyuncs.com --password-stdin
       
-      # 拉取和推送 Docker 镜像
-      - name: Pull and Push Docker images
+      # 拉取、变迁和推送 Docker 镜像
+      - name: Pull, Tag, and Push Docker images
         env:
           ALIYUN_NAMESPACE: ${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}
         run: |
-          for image in $(jq -r '.[]' images.json); do
-            echo "Processing image: ${image}"
-            docker pull --platform linux/${platform} ${image}
-            aliyun_image="registry.cn-guangzhou.aliyuncs.com/${{ env.ALIYUN_NAMESPACE }}/${image##*/}"
-            docker tag ${image} $aliyun_image
-            docker push ${aliyun_image}
+          for line in $(jq -r '.[]' images.json); do
+            echo "--- Processing line: ${line} ---"
+            
+            # 检查行中是否包含架构前缀。
+            # 逻辑：如果字符串包含冒号，并且冒号前的部分不包含斜杠，我们认为它是一个架构。
+            if [[ "$line" == *:* && "${line%%:*}" != */* ]]; then
+              # 分割字符串以获取平台和镜像名
+              platform="${line%%:*}"
+              image="${line#*:}"
+            else
+              # 如果没有找到有效的架构前缀，则使用默认值 arm64，并将整行作为镜像名
+              platform="arm64"
+              image="${line}"
+            fi
+
+            echo "Determined Platform: ${platform}, Image: ${image}"
+            
+            # 1. 使用指定的平台拉取镜像
+            echo "Pulling image with platform linux/${platform}..."
+            docker pull --platform "linux/${platform}" "${image}"
+            
+            # 2. 为镜像打上阿里云的标签
+            # `${image##*/}` 这部分逻辑保持不变，它能正确地从 "repo/image:tag" 中提取出 "image:tag"
+            aliyun_image="registry.cn-guangzhou.aliyuncs.com/${ALIYUN_NAMESPACE}/${image##*/}"
+            echo "Tagging ${image} as ${aliyun_image}"
+            docker tag "${image}" "${aliyun_image}"
+            
+            # 3. 推送镜像到阿里云
+            echo "Pushing ${aliyun_image}"
+            docker push "${aliyun_image}"
+            echo "------------------------------------"
           done
