@@ -33,7 +33,7 @@ jobs:
         run: |
           for image in $(jq -r '.[]' images.json); do
             echo "Processing image: ${image}"
-            docker pull ${image}
+            docker pull --platform linux/${platform} ${image}
             aliyun_image="registry.cn-guangzhou.aliyuncs.com/${{ env.ALIYUN_NAMESPACE }}/${image##*/}"
             docker tag ${image} $aliyun_image
             docker push ${aliyun_image}
