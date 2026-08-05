@@ -48,10 +48,10 @@ jobs:
               image="${line#*:}"
               echo "✓ Platform specified: ${platform}"
             else
-              # 默认架构
-              platform="arm64"
+              # 默认架构 - 使用 amd64 (x86)
+              platform="amd64"
               image="${line}"
-              echo "ℹ No platform specified, using default: ${platform}"
+              echo "ℹ No platform specified, using default: ${platform} (x86)"
             fi
             
             echo "  Image: ${image}"
