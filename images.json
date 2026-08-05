@@ -1,4 +1,4 @@
 [
-    "minzgo/music-toolbox:2.1.3-arm64",
-    "minzgo/music-scraper:2.1.3-arm64"
+    "node:22-alpine",
+    "ghcr.io/astral-sh/uv:python3.12-bookworm-slim"
 ]
