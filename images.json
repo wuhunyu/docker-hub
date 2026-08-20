@@ -1,4 +1,7 @@
 [
-    "node:22-alpine",
-    "astral/uv:python3.12-bookworm-slim"
+    "eclipse-temurin:21-jdk-alpine",
+    "eclipse-temurin:21-jdk",
+    "nginx:1.25-alpine",
+    "guacamole/guacd",
+    "postgres:15-alpine"
 ]
