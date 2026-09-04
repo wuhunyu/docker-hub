@@ -1,7 +1,3 @@
 [
-    "eclipse-temurin:21-jdk-alpine",
-    "eclipse-temurin:21-jdk",
-    "nginx:1.25-alpine",
-    "guacamole/guacd",
-    "postgres:15-alpine"
+    "ghcr.io/rachelos/we-mp-rss:latest"
 ]
