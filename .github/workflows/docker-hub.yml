@@ -19,7 +19,7 @@ jobs:
 
       # 检出仓库代码
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         
       # 安装 jq 以处理 JSON 文件
       - name: Install jq
