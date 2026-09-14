@@ -1,3 +1,3 @@
 [
-    "casbin/casdoor:4.4.0"
+    "postgres:18-alpine"
 ]
