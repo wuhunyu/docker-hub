@@ -1,3 +1,6 @@
 [
-    "nginx:1.31.6-alpine3.24-slim"
+    "node:22-alpine",
+    "nginx:1.27-alpine",
+    "node:22-bookworm-slim",
+    "postgres:17-alpine"
 ]
