@@ -1,3 +1,7 @@
 [
-    "caddy:2.11.7-alpine"
+    "ghcr.io/astral-sh/uv:python3.13-trixie-slim",
+"node:22-alpine",
+"caddy:2.11.7-alpine",
+"postgres:17-alpine",
+"redis:7.4-alpine"
 ]
