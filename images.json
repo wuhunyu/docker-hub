@@ -1,7 +1,5 @@
 [
-    "docker/dockerfile:1.7",
-"node:24-bookworm-slim",
-"postgres:16",
-"redis:7.4-alpine",
-"rustfs/rustfs:1.0.4"
+    "opensandbox/server:release-1.2.0",
+"opensandbox/execd:release-1.2.0",
+"opensandbox/egress:release-1.2.0"
 ]
