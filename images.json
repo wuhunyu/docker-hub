@@ -1,3 +1,7 @@
 [
-    "astral/uv:python3.13-trixie-slim"
+    "docker/dockerfile:1.7",
+"node:24-bookworm-slim",
+"postgres:16",
+"redis:7.4-alpine",
+"rustfs/rustfs:1.0.4"
 ]
