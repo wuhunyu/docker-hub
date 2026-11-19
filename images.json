@@ -1,5 +1,3 @@
 [
-    "opensandbox/server:release-1.2.0",
-"opensandbox/execd:release-1.2.0",
-"opensandbox/egress:release-1.2.0"
+    "rustfs/rustfs:1.0.0-rc.6"
 ]
